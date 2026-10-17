@@ -1,0 +1,9 @@
+build/
+plugin/build/
+plugin/build-log.txt
+plugin/build-local/vcpkg_installed/
+package/
+*.log
+*.pdb
+*.zip
+__pycache__/
