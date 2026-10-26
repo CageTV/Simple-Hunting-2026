@@ -46,4 +46,5 @@ CREDITS AND LICENSE
 -------------------
 Simple Hunting Overhaul by JaySerpa. Immersive Hunting Animations by Elsawirr and GiraPomba. Dynamic Activation Key by its author. The two menus this
 replaces were made by thmsn and MaskedRPGFan. The settings pages and SimpleHunting.dll are by CageTV, MIT licensed (see LICENSE.txt); they contain
-none of the original mods' code, meshes, textures or sounds. The optional scripts are rebuilt from JaySerpa's sources.
+none of the original mods' code, meshes, textures or sounds. The optional scripts are JaySerpa's own scripts, rebuilt with fewer calls and shared with credit;
+they are not covered by that license and they come down on the author's request.

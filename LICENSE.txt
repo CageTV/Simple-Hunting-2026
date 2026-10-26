@@ -3,10 +3,11 @@ Copyright (c) 2026 CageTV
 
 Released under the MIT License. Source code: https://github.com/CageTV/Simple-Hunting-2026
 
-This license covers the files written for this repository (SimpleHunting.dll and the settings pages) and the rebuilt copies of the two scripts of
-JaySerpa's Simple Hunting Overhaul. It does not cover plugin/include/SKSEMenuFramework.h (the SKSE Menu Framework 3 project's SDK header, under that
-project's terms). The meshes, textures, sounds and plugin of Simple Hunting Overhaul and Immersive Hunting Animations are not included: they stay
-in the original mods.
+This license covers the files written for this repository (SimpleHunting.dll and the settings pages). It does not cover plugin/include/SKSEMenuFramework.h
+(the SKSE Menu Framework 3 project's SDK header, under that project's terms), and it does not cover the two scripts in src/scripts (SHO_PickUpCarCass.psc and
+SHO_PlayerAliasScript.psc): they are JaySerpa's scripts from Simple Hunting Overhaul with the same behaviour and fewer calls, shared here with credit and
+without any claim over the original work, and they come down on the author's request. The meshes, textures, sounds and plugins of Simple Hunting Overhaul and
+Immersive Hunting Animations are not included: they stay in the original mods.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -30,9 +31,9 @@ The "new" SimpleHunting.dll statically links CommonLibSSE-NG by alandtse (https:
 GPL-3.0-or-later with a Modding Exception and a GPL-3.0 Linking Exception. The Modding Exception covers the Skyrim code being modded; it
 does not cover plugin code. The "new" SimpleHunting.dll is therefore a combined work and is distributed under the GNU General Public License,
 version 3 or (at your option) any later version. Its complete corresponding source code is in this repository:
-https://github.com/CageTV/Simple Hunting Overhaul 2026-2026
+https://github.com/CageTV/Simple-Hunting-2026
 
-Simple Hunting Overhaul 2026 2026
+Simple Hunting Overhaul 2026
 Copyright (c) 2026 CageTV
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
