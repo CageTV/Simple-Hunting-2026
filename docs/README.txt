@@ -20,11 +20,13 @@ Every option and default is the original mods' own. The settings are the origina
 A copy is kept in Data/SKSE/Plugins/SimpleHunting/settings.ini and applied on every game load, so your settings follow you to a new character. The
 first time you load a game, whatever the game already has is taken into that file, so nothing resets.
 
-THE OPTIMISED SCRIPTS (optional)
---------------------------------
+THE OPTIMISED SCRIPTS (optional, GitHub only)
+--------------------------------------------
 Two of the original mod's scripts are rebuilt with the same behaviour and fewer calls: SHO_PickUpCarCass reads the animal's voice type once (it did
 up to twelve native calls) and no longer errors when you press the pick-up key with nothing in the crosshair; SHO_PlayerAliasScript looks the animation
 mod's globals up once instead of on every skinning, and reads the actor and the looting mode once. Nothing about how skinning plays changes.
+They contain modified copies of JaySerpa's scripts, so they are not uploaded to Nexus: download "Simple Hunting Overhaul 2026 - Optimised Scripts" from
+https://github.com/CageTV/Simple-Hunting-2026/releases and install it after the original mod. Everything else here works without them.
 
 REQUIREMENTS
 ------------
@@ -36,7 +38,7 @@ REQUIREMENTS
 
 LOAD ORDER
 ----------
-Install after (below) the original Simple Hunting Overhaul in MO2's left pane, so the optimised scripts win. The plugin has no .esp.
+Install after (below) the original Simple Hunting Overhaul in MO2's left pane. The plugin has no .esp.
 
 BUILDS
 ------
@@ -46,5 +48,5 @@ CREDITS AND LICENSE
 -------------------
 Simple Hunting Overhaul by JaySerpa. Immersive Hunting Animations by Elsawirr and GiraPomba. Dynamic Activation Key by its author. The two menus this
 replaces were made by thmsn and MaskedRPGFan. The settings pages and SimpleHunting.dll are by CageTV, MIT licensed (see LICENSE.txt); they contain
-none of the original mods' code, meshes, textures or sounds. The optional scripts are JaySerpa's own scripts, rebuilt with fewer calls and shared with credit;
-they are not covered by that license and they come down on the author's request.
+none of the original mods' code, meshes, textures or sounds. The optional scripts (GitHub only) are JaySerpa's own scripts, rebuilt with fewer calls and shared with credit; they are not covered by that license and
+they come down on the author's request.

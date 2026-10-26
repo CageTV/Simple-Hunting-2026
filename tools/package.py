@@ -1,7 +1,8 @@
 """Lays out the Simple Hunting Overhaul 2026 packages (staging in package/, nothing outside the workspace is touched).
 
-  package/Simple Hunting Overhaul 2026            the layer for a quick install: new SimpleHunting.dll + the two optimised scripts + README + LICENSE
-  package/Simple Hunting Overhaul 2026 - Installer(.zip)   FOMOD: pick the DLL build (new / older) and whether to add the optimised scripts
+  package/Simple Hunting Overhaul 2026            the layer for a quick install: new SimpleHunting.dll + README + LICENSE
+  package/Simple Hunting Overhaul 2026 - Installer(.zip)   FOMOD: pick the DLL build (new / older)
+  package/Simple Hunting Overhaul 2026 - Optimised Scripts(.zip)   the two rebuilt JaySerpa scripts, GitHub ONLY (never uploaded to Nexus)
 
 Needs plugin/build/release/SimpleHunting.dll (older, plugin/build.cmd), E:/WorkSpace/ng-build/build/release/out/SimpleHunting/SimpleHunting.dll
 (new, ng-build/build.cmd SimpleHunting) and build/scripts (tools/build_scripts.py).
@@ -42,7 +43,6 @@ quick = os.path.join(HERE, "package", "Simple Hunting Overhaul 2026")
 if os.path.exists(quick):
     shutil.rmtree(quick)
 put(NEW, os.path.join(quick, "SKSE", "Plugins", "SimpleHunting.dll"))
-scripts_into(quick)
 put(os.path.join(HERE, "docs", "README.txt"), os.path.join(quick, "Simple Hunting Overhaul 2026 README.txt"))
 put(os.path.join(HERE, "LICENSE.txt"), os.path.join(quick, "Simple Hunting Overhaul 2026 LICENSE.txt"))
 
@@ -52,7 +52,6 @@ if os.path.exists(dest):
     shutil.rmtree(dest)
 put(NEW, os.path.join(dest, "new", "SKSE", "Plugins", "SimpleHunting.dll"))
 put(OLD, os.path.join(dest, "older", "SKSE", "Plugins", "SimpleHunting.dll"))
-scripts_into(os.path.join(dest, "scripts"))
 put(os.path.join(HERE, "docs", "README.txt"), os.path.join(dest, "README.txt"))
 put(os.path.join(HERE, "LICENSE.txt"), os.path.join(dest, "LICENSE.txt"))
 NEW_VER = "1.6.1170.0"
@@ -85,19 +84,6 @@ config = f"""<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:n
         </group>
       </optionalFileGroups>
     </installStep>
-    <installStep name="Scripts">
-      <optionalFileGroups order="Explicit">
-        <group name="Optimised scripts" type="SelectAny">
-          <plugins order="Explicit">
-            <plugin name="Optimised scripts">
-              <description>Rebuilt SHO_PickUpCarCass and SHO_PlayerAliasScript: the same behaviour with fewer calls (see the README). Install after the original Simple Hunting Overhaul so they win.</description>
-              <files><folder source="scripts" destination=""/></files>
-              <typeDescriptor><type name="Recommended"/></typeDescriptor>
-            </plugin>
-          </plugins>
-        </group>
-      </optionalFileGroups>
-    </installStep>
   </installSteps>
 </config>
 """
@@ -109,6 +95,40 @@ xml.dom.minidom.parseString(info)
 os.makedirs(os.path.join(dest, "fomod"), exist_ok=True)
 open(os.path.join(dest, "fomod", "ModuleConfig.xml"), "w", encoding="utf-8", newline="\n").write(config)
 open(os.path.join(dest, "fomod", "info.xml"), "w", encoding="utf-8", newline="\n").write(info)
+# ---- the GitHub-only scripts add-on ----------------------------------------------------------------------------------------------
+SNAME = "Simple Hunting Overhaul 2026 - Optimised Scripts"
+sdest = os.path.join(HERE, "package", SNAME)
+if os.path.exists(sdest):
+    shutil.rmtree(sdest)
+scripts_into(sdest)
+open(os.path.join(sdest, "README.txt"), "w", encoding="utf-8", newline="\n").write("""Simple Hunting Overhaul 2026 - Optimised Scripts
+Rebuilt from SHO_PickUpCarCass.psc and SHO_PlayerAliasScript.psc of Simple Hunting Overhaul (Nexus 95943) by JaySerpa. Needs the original mod. GitHub only: it is
+not on Nexus, because it contains modified copies of the original author's scripts. It stays up while the author has no objection and comes down on request.
+
+WHAT IT CHANGES
+---------------
+SHO_PickUpCarCass reads the animal's voice type once (it did up to twelve native calls) and no longer errors when you press the pick-up key with nothing in the
+crosshair. SHO_PlayerAliasScript looks the animation mod's globals up once instead of on every skinning, and reads the actor and the looting mode once.
+Nothing about how skinning plays changes.
+
+INSTALL
+-------
+Install it after (below) the original Simple Hunting Overhaul in MO2's left pane so the scripts win. Uninstall it to go back to the original.
+
+CREDITS AND LICENSE
+-------------------
+Simple Hunting Overhaul and the original scripts are by JaySerpa. These rebuilt copies are shared with credit and without any claim over the original work.
+""")
+szip = sdest + ".zip"
+if os.path.exists(szip):
+    os.remove(szip)
+with zipfile.ZipFile(szip, "w", zipfile.ZIP_DEFLATED) as z:
+    for dp, _, fs in os.walk(sdest):
+        for fn in fs:
+            pth = os.path.join(dp, fn)
+            z.write(pth, os.path.relpath(pth, sdest))
+print("scripts add-on:", szip)
+
 zpath = dest + ".zip"
 if os.path.exists(zpath):
     os.remove(zpath)
