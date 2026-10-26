@@ -25,6 +25,9 @@ for p in (OLD, NEW, SCRIPTS):
 PEX = ["SHO_PickUpCarCass.pex", "SHO_PlayerAliasScript.pex"]
 PSC = ["SHO_PickUpCarCass.psc", "SHO_PlayerAliasScript.psc"]
 
+LOGO = os.path.join(HERE, "assets", "simplehunting_logo.png")
+LOGO_DEST = os.path.join("Interface", "SimpleHunting", "simplehunting_logo.png")
+
 
 def put(src, dst):
     os.makedirs(os.path.dirname(dst), exist_ok=True)
@@ -43,6 +46,7 @@ quick = os.path.join(HERE, "package", "Simple Hunting Overhaul 2026")
 if os.path.exists(quick):
     shutil.rmtree(quick)
 put(NEW, os.path.join(quick, "SKSE", "Plugins", "SimpleHunting.dll"))
+put(LOGO, os.path.join(quick, LOGO_DEST))
 put(os.path.join(HERE, "docs", "README.txt"), os.path.join(quick, "Simple Hunting Overhaul 2026 README.txt"))
 put(os.path.join(HERE, "LICENSE.txt"), os.path.join(quick, "Simple Hunting Overhaul 2026 LICENSE.txt"))
 
@@ -52,12 +56,14 @@ if os.path.exists(dest):
     shutil.rmtree(dest)
 put(NEW, os.path.join(dest, "new", "SKSE", "Plugins", "SimpleHunting.dll"))
 put(OLD, os.path.join(dest, "older", "SKSE", "Plugins", "SimpleHunting.dll"))
+put(LOGO, os.path.join(dest, "logo", LOGO_DEST))
 put(os.path.join(HERE, "docs", "README.txt"), os.path.join(dest, "README.txt"))
 put(os.path.join(HERE, "LICENSE.txt"), os.path.join(dest, "LICENSE.txt"))
 NEW_VER = "1.6.1170.0"
 config = f"""<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://qconsulting.ca/fo3/ModConfig5.0.xsd">
   <moduleName>Simple Hunting Overhaul 2026</moduleName>
   <requiredInstallFiles>
+    <folder source="logo" destination=""/>
     <file source="README.txt" destination="Simple Hunting Overhaul 2026 README.txt"/>
     <file source="LICENSE.txt" destination="Simple Hunting Overhaul 2026 LICENSE.txt"/>
   </requiredInstallFiles>

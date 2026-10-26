@@ -151,8 +151,25 @@ namespace Menu
 			}
 		}
 
+		constexpr const char* kLogoPath = "Data\\Interface\\SimpleHunting\\simplehunting_logo.png";
+		constexpr float       kLogoAspect = 0.471f;
+
+		void Logo()
+		{
+			static ImTextureID tex = SKSEMenuFramework::LoadTexture(kLogoPath);
+			if (!tex) {
+				return;
+			}
+			const float avail = GetContentRegionAvail().x;
+			const float w = std::min(avail, 460.0f);
+			SetCursorPosX(GetCursorPosX() + (avail - w) * 0.5f);
+			Image(tex, ImVec2(w, w * kLogoAspect));
+			Spacing();
+		}
+
 		void __stdcall RenderOverview()
 		{
+			Logo();
 			if (!Settings::Loaded("Simple Hunting Overhaul.esp")) {
 				TextColored(ImVec4(1.0f, 0.45f, 0.4f, 1.0f), "Simple Hunting Overhaul.esp is not loaded.");
 				return;
