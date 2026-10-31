@@ -31,6 +31,17 @@ VoiceType Property CrGiantVoice Auto
 
 Formlist property SHO_Blacklist Auto
 
+; Added by Simple Hunterborn (Monops), which makes Hunterborn's loot follow SHO's hunting experience: the harvest level and the four tier globals its
+; leveled lists read. Empty (None) without Simple Hunterborn, and then not used.
+GlobalVariable Property _DS_Hunterborn_HarvestLevel Auto
+GlobalVariable Property SHB_HarvestingTier1_MNPS Auto
+GlobalVariable Property SHB_HarvestingTier2_MNPS Auto
+GlobalVariable Property SHB_HarvestingTier3_MNPS Auto
+GlobalVariable Property SHB_HarvestingTier4_MNPS Auto
+GlobalVariable Property SHB_SkinningsRequired_Tier2_MNPS Auto
+GlobalVariable Property SHB_SkinningsRequired_Tier3_MNPS Auto
+GlobalVariable Property SHB_SkinningsRequired_Tier4_MNPS Auto
+
 ; What each option means:
 ; _FadeTimePass == 0 means that no time passes and there's no fadeout of the screen
 ; _FadeTimePass == 1 means both time and fadeout of the screen happen. This is the default.
@@ -42,6 +53,20 @@ Formlist property _IngredientsAndMeats Auto
 
 bool debugMessages = false
 
+; Simple Hunting Overhaul 2026: with Hunterborn installed but not Simple Hunterborn, Hunterborn does the hunting (field dressing, skinning, harvesting,
+; butchering, time passing), so SHO's own reaction to a pelt or meat taken from a dead animal (the skinned look, time passing, experience) stays off. It would
+; otherwise skin the animal a second time, behind Hunterborn's prompt. With Simple Hunterborn SHO runs the hunt and Hunterborn supplies the loot.
+bool hunterbornChecked = false
+bool hunterbornPresent = false
+
+bool Function HunterbornPresent()
+	If !hunterbornChecked
+		hunterbornPresent = Game.IsPluginInstalled("Hunterborn.esp") && !Game.IsPluginInstalled("SimpleHunterborn.esp")
+		hunterbornChecked = true
+	EndIf
+	return hunterbornPresent
+EndFunction
+
 Event OnInIt()
 	AddInventoryEventFilter(_VanillaPelts)
 	AddInventoryEventFilter(_Brumapelts)
@@ -51,6 +76,10 @@ Event OnInIt()
 EndEvent
 
 Event OnItemAdded(Form akBaseItem, Int aiItemCount, ObjectReference akItemReference, ObjectReference akSourceContainer)
+
+	If HunterbornPresent()
+		Return
+	EndIf
 
 	Actor TheActor = akSourceContainer as actor 
 	
@@ -149,7 +178,33 @@ Function GlobalCheck(int creatureIndex, float scale)
 			FadeOut(timeToPass)
 		endif
 	endif
+
+	UpdateHarvestingGlobals()
 endfunction
+
+; Simple Hunterborn: the experience tiers (skinnings required for tier 2, 3 and 4) switch Hunterborn's four loot tiers; a tier global at 0 is the open one.
+Function UpdateHarvestingGlobals()
+	If !SHB_HarvestingTier1_MNPS
+		Return
+	EndIf
+	float currentXP = _HuntingXP.GetValue()
+	float tier2 = SHB_SkinningsRequired_Tier2_MNPS.GetValue()
+	float tier3 = SHB_SkinningsRequired_Tier3_MNPS.GetValue()
+	float tier4 = SHB_SkinningsRequired_Tier4_MNPS.GetValue()
+	SHB_HarvestingTier1_MNPS.SetValue(100)
+	SHB_HarvestingTier2_MNPS.SetValue(100)
+	SHB_HarvestingTier3_MNPS.SetValue(100)
+	SHB_HarvestingTier4_MNPS.SetValue(100)
+	If currentXP >= tier4 + 1
+		SHB_HarvestingTier4_MNPS.SetValue(0)
+	ElseIf currentXP >= tier3
+		SHB_HarvestingTier3_MNPS.SetValue(0)
+	ElseIf currentXP >= tier2
+		SHB_HarvestingTier2_MNPS.SetValue(0)
+	Else
+		SHB_HarvestingTier1_MNPS.SetValue(0)
+	EndIf
+EndFunction
 
 
 Function XP()
@@ -167,6 +222,7 @@ Function PassTime(float timeToPass = 2.0)
 	float MinExperienceMult = _MinExperienceMult.GetValue()
 
 	float howlong
+	int harvestLevel = 0
 	float currentXP = _HuntingXP.GetValue()
 
 	float xpMult =  (100.0 - currentXP)/100.0
@@ -186,21 +242,31 @@ Function PassTime(float timeToPass = 2.0)
 	
 	If  howlong > 2.5
 		Debug.notification("A couple of hours pass while you retrieve the pelt...")
-	elseif howlong >= 1.75 
-		Debug.notification("About Two hours pass while you retrieve the pelt...")	
-	elseif howlong >= 1.25 
+	elseif howlong >= 1.75
+		Debug.notification("About Two hours pass while you retrieve the pelt...")
+		harvestLevel = 1
+	elseif howlong >= 1.25
 		Debug.notification("About an hour and half pass while you retrieve the pelt...")
-	elseif  howlong >= 1 
+		harvestLevel = 2
+	elseif  howlong >= 1
 		Debug.notification("Around one hour passes...")
-	elseif howlong >= 0.8 
+		harvestLevel = 3
+	elseif howlong >= 0.8
 		Debug.notification("Less than one hour passes...")
+		harvestLevel = 4
 	elseif   howlong >= 0.4
 		Debug.notification("About half an hour passes...")
+		harvestLevel = 5
 	elseif    howlong >= 0.2
 		Debug.notification("About a quarter of an hour passes...")
+		harvestLevel = 7
 	else
 		Debug.notification("A few minutes pass...")
+		harvestLevel = 9
 	endif
+	If _DS_Hunterborn_HarvestLevel && harvestLevel > 0  ; Simple Hunterborn: the quicker the skinning (experience), the better Hunterborn's harvest
+		_DS_Hunterborn_HarvestLevel.SetValue(harvestLevel)
+	EndIf
 
 	DebugMessage("Passing time = "+ howlong)
 	float time = GameHour.getValue()

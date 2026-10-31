@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 # SimpleHunting.dll - the SKSE plugin behind Simple Hunting Overhaul 2026's SKSE Menu Framework settings pages.
-project(SimpleHunting VERSION 1.0.0 LANGUAGES CXX)
+project(SimpleHunting VERSION 1.1.0 LANGUAGES CXX)
 
 find_package(CommonLibSSE CONFIG REQUIRED)
 

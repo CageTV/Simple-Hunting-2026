@@ -59,6 +59,10 @@ GlobalVariable Function GetIHAnimTrigger()
 EndFunction
 
 Function PickUpCarcass()
+	; Simple Hunting Overhaul 2026: with Hunterborn installed, picking a carcass up is Hunterborn's action (its prompt), not this one.
+	If Game.IsPluginInstalled("Hunterborn.esp")
+		return
+	EndIf
 	Actor TheActor = Game.GetCurrentCrosshairRef() as Actor
 	If !TheActor
 		return

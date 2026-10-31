@@ -37,6 +37,29 @@ namespace Actions
 			});
 		}
 
+		// Gives or takes away the perk that switches Immersive Hunting Animations on (IH_PK_ImmersiveHunting), without its script. StartMod does the
+		// same through Papyrus, but when the animation mod's main script does not load (its types do not link) the call fails and the perk would
+		// stay on the player, its carcass handling running whatever the setting says.
+		void SetIHPerk(bool a_on)
+		{
+			SKSE::GetTaskInterface()->AddTask([a_on]() {
+				auto* player = RE::PlayerCharacter::GetSingleton();
+				auto* dh = RE::TESDataHandler::GetSingleton();
+				auto* perk = dh ? dh->LookupForm<RE::BGSPerk>(0x000D42, kIH) : nullptr;
+				if (!player || !perk) {
+					return;
+				}
+				const bool has = player->HasPerk(perk);
+				if (a_on && !has) {
+					player->AddPerk(perk);
+					SKSE::log::info("Immersive Hunting Animations: perk given directly");
+				} else if (!a_on && has) {
+					player->RemovePerk(perk);
+					SKSE::log::info("Immersive Hunting Animations: perk taken away directly");
+				}
+			});
+		}
+
 		float GlobalValue(const char* a_id, float a_default)
 		{
 			const auto* d = Settings::Find(a_id);
@@ -139,6 +162,7 @@ namespace Actions
 		switch (a_after) {
 		case Settings::After::IHStartMod:
 			CallQuest(kIH, kIHQuest, kIHScript, "StartMod", on);
+			SetIHPerk(on);
 			break;
 		case Settings::After::IHPickup:
 			CallQuest(kIH, kIHQuest, kIHScript, "EnablePickup", on);

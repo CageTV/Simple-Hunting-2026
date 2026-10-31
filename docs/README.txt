@@ -28,6 +28,14 @@ mod's globals up once instead of on every skinning, and reads the actor and the 
 They contain modified copies of JaySerpa's scripts, so they are not uploaded to Nexus: download "Simple Hunting Overhaul 2026 - Optimised Scripts" from
 https://github.com/CageTV/Simple-Hunting-2026/releases and install it after the original mod. Everything else here works without them.
 
+WITH HUNTERBORN (1.1.0)
+-----------------------
+The optional scripts know about Hunterborn. With Hunterborn installed, Hunterborn does the skinning, so the scripts leave your pelts and meat alone (no second
+skinning, no fade, no time passing behind Hunterborn's own). With Simple Hunterborn (Nexus 109288) also installed, Simple Hunting Overhaul runs the hunt as that
+mod intends: the scripts carry its harvest-level and tier changes, so Hunterborn's loot follows your hunting experience. Without Hunterborn nothing changes.
+Switching Immersive Hunting Animations off on the Animations page now also takes its perk away directly, so it stops acting even when that mod's own script
+cannot load. Its realistic-skinning, pick-up, displays and loot-mode options can be switched off there too.
+
 REQUIREMENTS
 ------------
 - Simple Hunting Overhaul (Nexus 95943) and Dynamic Activation Key, as the original requires

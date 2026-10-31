@@ -11,7 +11,7 @@ import sys
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GAME = r"E:\Tabula Rasa\Stock Game"
 MODS = r"E:\Tabula Rasa\mods"
-ORIGINAL = r"H:\Hunting\Simple Hunting Overhaul\source\scripts"
+ORIGINAL = r"H:\Modlists\Tabula\mods\Simple Hunting Overhaul\source\scripts"
 SRC = os.path.join(HERE, "src", "scripts")
 OUT = os.path.join(HERE, "build", "scripts")
 COMPILER = os.path.join(GAME, "Papyrus Compiler", "PapyrusCompiler.exe")
